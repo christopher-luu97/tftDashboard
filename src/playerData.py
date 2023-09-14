@@ -15,10 +15,25 @@ class PlayerData():
     """
     This class generates all match data for a summoner provided their username
     """
-    def __init__(self):
-        
-        self.rw = riotWrapper(key=self.get_key(), main_url="") 
+    def __init__(self, summoner_name:str):
+        key = self.get_key()
+        self.rw = riotWrapper(key=key, main_url="") 
+        self.summoner_name = summoner_name
+        self.get_regions()
 
+    def load_from_json(self, file_path:str)->str:
+        """
+        Load data from JSON
+
+        Args:
+            file_path (str): oath to jason file
+        
+        Returns:
+            dict: Json file read in
+        """
+        with open(file_path) as f:
+            json_data = json.load(f)
+        return json_data
 
     def get_key(self):
         """
@@ -26,7 +41,23 @@ class PlayerData():
         """
         parent_dir = Path(os.getcwd()).parent.absolute()
         key_path = os.path.join(parent_dir, "env.json")
-        with open(key_path) as f:
-            api_key = json.load(f)
+        api_key = self.load_from_json(key_path)
         return api_key
+    
+    def get_regions(self):
+        """
+        Get the regions for the API
+        """
+        region_json = os.path.join(os.getcwd(), "riotWrapperConfig.json")
+        with open(region_json) as f:
+            region_data = json.load(f)
+        self.region_url = region_data['region_url']
+        self.server_url = region_data['server_url']
 
+    def get_api_url(self):
+        """
+        Get the API urls and store in the instance
+        """
+        api_json = os.path.join(os.getcwd(), "riotAPI.json")
+        with open(api_json, "r") as f:
+            self.api_data = json.load(f)

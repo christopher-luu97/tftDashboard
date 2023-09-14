@@ -3,8 +3,8 @@ class riotWrapper():
     This class is used to generate the appropriate API url.
     Currently, it only works in the SEA region, for oc1 server
     """
-    def __init__(self, riot_endpoint:str, main_url:str):
-        self.riot_endpoint = riot_endpoint 
+    def __init__(self, riot_api_key:str, main_url:str):
+        self.riot_api_key = riot_api_key 
         self.main_url = main_url # contains sub-regions e.g. oc1, eu1, na1 etc. instead of SEA etc.
 
     def api_url(self, api_url:str, region_url:str = None) -> str:
@@ -19,9 +19,9 @@ class riotWrapper():
             str: complete url to send a request to get data from
         """
         if region_url:
-            return region_url + api_url + '?api_key=' + self.riot_endpoint
+            return region_url + api_url + '?api_key=' + self.riot_api_key
         else:
-            return self.main_url + api_url + '?api_key=' + self.riot_endpoint
+            return self.main_url + api_url + '?api_key=' + self.riot_api_key
     
     def match_count(self, api_url:str, region_url:str, match_count:int=20)->str:
         """
@@ -37,6 +37,6 @@ class riotWrapper():
             str: String URL for request
         """
         match_count_string = f"?start=0&count={match_count}"
-        api_component = "&api_key="+self.riot_endpoint
+        api_component = "&api_key="+self.riot_api_key
         return region_url+api_url+match_count_string+api_component
         
