@@ -1,0 +1,7 @@
+requests
+json
+os
+dash
+plotly
+pandas
+numpy
