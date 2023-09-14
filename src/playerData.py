@@ -11,10 +11,22 @@ import json
 import requests
 from riotWrapper import riotWrapper
 
-class Summoner():
+class PlayerData():
     """
     This class generates all match data for a summoner provided their username
     """
     def __init__(self):
-        self.rw = riotWrapper(key="", main_url="") 
+        
+        self.rw = riotWrapper(key=self.get_key(), main_url="") 
+
+
+    def get_key(self):
+        """
+        Get the key to access API
+        """
+        parent_dir = Path(os.getcwd()).parent.absolute()
+        key_path = os.path.join(parent_dir, "env.json")
+        with open(key_path) as f:
+            api_key = json.load(f)
+        return api_key
 
